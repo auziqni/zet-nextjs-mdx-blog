@@ -6,7 +6,6 @@ import { buttonVariants } from "./ui/button";
 import { cn, formatDate } from "@/lib/utils";
 
 interface PostItemProps {
-  id: number;
   title: string;
   date: string;
   author: string;
@@ -26,7 +25,7 @@ export default function Card({
     <article className="flex flex-col gap-2 border-border border-b py-3">
       <div>
         <h2 className="text-2xl font-bold">
-          <Link href={"/" + slug}>{title}</Link>
+          <Link href={"/blog/" + slug}>{title}</Link>
         </h2>
       </div>
       <div className="flex gap-2">

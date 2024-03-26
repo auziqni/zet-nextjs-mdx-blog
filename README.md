@@ -25,44 +25,121 @@ pnpm add velite -D
 
 ```
 
-Create a **velite.config.js** file in the root directory
+Create a **velite.config.ts** file in the root directory
 
 ```javascript
-import { defineConfig, s } from "velite";
+import { defineConfig, defineCollection, s } from "velite";
+import rehypeSlug from "rehype-slug";
+import rehypePrettyCode from "rehype-pretty-code";
+import rehypeAutolinkHeadings from "rehype-autolink-headings";
 
-// `s` is extended from Zod with some custom schemas,
-// you can also import re-exported `z` from `velite` if you don't need these extension schemas.
+const computedFields = <T extends { slug: string }>(data: T) => ({
+  ...data,
+  slugAsParams: data.slug.split("/").slice(1).join("/"),
+});
+
+const posts = defineCollection({
+  name: "Post",
+  pattern: "blog/**/*.mdx",
+  schema: s
+    .object({
+      slug: s.path(), //todo coba ubah ke slug: s.slug('posts'), // validate format, unique in posts collection
+      title: s.string().max(99),
+      date: s.isodate(),
+      author: s.string().max(99),
+      tags: s.array(s.string()).optional(),
+      description: s.string().max(999).optional(),
+      body: s.mdx(),
+    })
+    .transform(computedFields),
+});
 
 export default defineConfig({
-  collections: {
-    posts: {
-      name: "Post", // collection type name
-      pattern: "posts/**/*.md", // content files glob pattern
-      schema: s
-        .object({
-          title: s.string().max(99), // Zod primitive type
-          slug: s.slug("posts"), // validate format, unique in posts collection
-          // slug: s.path(), // auto generate slug from file path
-          date: s.isodate(), // input Date-like string, output ISO Date string.
-          cover: s.image(), // input image relative path, output image object with blurImage.
-          video: s.file().optional(), // input file relative path, output file public path.
-          metadata: s.metadata(), // extract markdown reading-time, word-count, etc.
-          excerpt: s.excerpt(), // excerpt of markdown content
-          content: s.markdown(), // transform markdown to html
-        })
-        // more additional fields (computed fields)
-        .transform((data) => ({ ...data, permalink: `/blog/${data.slug}` })),
-    },
-    others: {
-      // other collection schema options
-    },
+  root: "content",
+  output: {
+    data: ".velite",
+    assets: "public/static",
+    base: "/static/",
+    name: "[name]-[hash:6].[ext]",
+    clean: true,
+  },
+  collections: { posts },
+  mdx: {
+    rehypePlugins: [
+      rehypeSlug,
+      [rehypePrettyCode, { theme: "github-dark" }],
+      [
+        rehypeAutolinkHeadings,
+        {
+          behavior: "wrap",
+          properties: {
+            className: ["subheading-anchor"],
+            ariaLabel: "Link to section",
+          },
+        },
+      ],
+    ],
+    remarkPlugins: [],
   },
 });
+
+```
+
+### next.config
+
+```mjs
+import { build } from "velite";
+
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  webpack: (config) => {
+    config.plugins.push(new VeliteWebpackPlugin());
+    return config;
+  },
+};
+
+export default nextConfig;
+
+class VeliteWebpackPlugin {
+  static started = false;
+  constructor(/** @type {import('velite').Options} */ options = {}) {
+    this.options = options;
+  }
+  apply(/** @type {import('webpack').Compiler} */ compiler) {
+    // executed three times in nextjs !!!
+    // twice for the server (nodejs / edge runtime) and once for the client
+    compiler.hooks.beforeCompile.tapPromise("VeliteWebpackPlugin", async () => {
+      if (VeliteWebpackPlugin.started) return;
+      VeliteWebpackPlugin.started = true;
+      const dev = compiler.options.mode === "development";
+      this.options.watch = this.options.watch ?? dev;
+      this.options.clean = this.options.clean ?? !dev;
+      await build(this.options); // start velite
+    });
+  }
+}
+```
+
+### tsconfig
+
+```json
+"paths": {
+      "@/*": ["./*"],
+      "#site/content": ["./.velite"]
+    }
+```
+
+### gitignore
+
+```
+# velite files
+.velite
 ```
 
 ## other
 
 ```bash
 pnpm i github-slugger
+pnpm i rehype-slug rehype-pretty-code rehype-autolink-headings
 
 ```
