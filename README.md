@@ -1,5 +1,7 @@
 # hello
 
+ini bagian dari perjalanan pembelajaran saya, mengikuti tutorial keren dari [YouTube](https://www.youtube.com/watch?v=tSI98g3PDyE) dan juga menjelajahi kode di [GitHub](https://github.com/jolbol1/nextjs-velite-blog-template)
+
 # depepencies
 
 ## installing ui
