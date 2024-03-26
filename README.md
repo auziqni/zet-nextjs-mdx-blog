@@ -141,5 +141,12 @@ class VeliteWebpackPlugin {
 ```bash
 pnpm i github-slugger
 pnpm i rehype-slug rehype-pretty-code rehype-autolink-headings
+pnpm install -D @tailwindcss/typography
 
+```
+
+for tailwind
+
+```typescript
+ plugins:[ require("@tailwindcss/typography")],
 ```

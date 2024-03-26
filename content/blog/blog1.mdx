@@ -2,46 +2,108 @@
 title: "Teknologi Terbaru: Mengenal Konsep AI dalam Otomatisasi"
 date: "2024-01-25"
 author: "Nama Anda"
-tags: ["Teknologi", "AI", "Otomatisasi"]
-description: "Pelajari bagaimana kecerdasan buatan (AI) memainkan peran kunci dalam otomatisasi proses di era teknologi terbaru."
+tags: ["code", "rehype pretty", "mdx"]
+description: "Syntax highlighting, line numbers, line highlights, word highlights"
 slug: "teknologi-terbaru-mengenal-konsep-ai-dalam-otomatisasi-inislug"
 published: true
 ---
 
-# hallo
+[`rehype-pretty-code`](https://github.com/atomiks/rehype-pretty-code) is a Rehype plugin powered by the
+[`shiki`](https://github.com/shikijs/shiki) syntax highlighter that provides beautiful code blocks for Markdown or MDX. It works on both the server at build-time (avoiding runtime syntax highlighting) and on the client for dynamic highlighting.
 
-Selamat datang di blog kami yang akan membahas teknologi terbaru! Pada artikel ini, kita akan menjelajahi konsep kecerdasan buatan (AI) dalam konteks otomatisasi, yang menjadi tren penting dalam industri teknologi saat ini.
+## Editor-Grade Highlighting
 
-## Apa itu Kecerdasan Buatan (AI)?
+<span className="mix-blend-plus-lighter text-zinc-400/80">
+  Enjoy the accuracy and granularity of VS Code's syntax highlighting engine and
+  the popularity of its themes ecosystem — use any VS Code theme you want!
+</span>
 
-Kecerdasan buatan (AI) merujuk pada kemampuan mesin untuk meniru kecerdasan manusia. Ini melibatkan penggunaan algoritma dan model matematika yang memungkinkan komputer untuk belajar dari data, mengidentifikasi pola, dan membuat keputusan dengan sedikit atau tanpa campur tangan manusia.
+## Line Numbers and Line Highlighting
 
-## Otomatisasi dengan AI
+Draw attention to a particular line of code.
 
-Salah satu aplikasi utama AI adalah dalam otomatisasi proses. Dengan menggunakan teknologi AI, kita dapat membuat sistem yang dapat mengotomatisasi tugas-tugas yang dulunya membutuhkan intervensi manusia.
+```js {4} showLineNumbers
+import { useFloating } from "@floating-ui/react";
 
-Contoh penerapan AI dalam otomatisasi meliputi:
+function MyComponent() {
+  const { refs, floatingStyles } = useFloating();
 
-### 1. Pengolahan Bahasa Alami (NLP)
+  return (
+    <>
+      <div ref={refs.setReference} />
+      <div ref={refs.setFloating} style={floatingStyles} />
+    </>
+  );
+}
+```
 
-Dengan NLP, komputer dapat memahami, menganalisis, dan menghasilkan bahasa manusia. Hal ini memungkinkan otomatisasi dalam tugas-tugas seperti klasifikasi dokumen, ekstraksi informasi, dan bahkan penerjemahan.
+## Word Highlighting
 
-### 2. Pengenalan Gambar
+Draw attention to a particular word or series of characters.
 
-Teknologi pengenalan gambar menggunakan AI untuk mengidentifikasi dan memahami gambar. Ini digunakan dalam otomatisasi pengawasan kualitas, pengenalan wajah, dan banyak aplikasi lainnya.
+```js /floatingStyles/
+import { useFloating } from "@floating-ui/react";
 
-### 3. Proses Otomatisasi RPA
+function MyComponent() {
+  const { refs, floatingStyles } = useFloating();
 
-RPA (Robotic Process Automation) menggunakan robot perangkat lunak untuk mengotomatisasi tugas-tugas rutin yang manual. Dengan menggabungkan RPA dengan teknik AI seperti pemrosesan citra atau pemrosesan bahasa alami, kita dapat menciptakan sistem yang lebih cerdas dan adaptif.
+  return (
+    <>
+      <div ref={refs.setReference} />
+      <div ref={refs.setFloating} style={floatingStyles} />
+    </>
+  );
+}
+```
 
-## Manfaat Otomatisasi dengan AI
+## ANSI Highlighting
 
-- **Efisiensi**: Mengotomatisasi tugas-tugas rutin memungkinkan perusahaan untuk menghemat waktu dan sumber daya.
-- **Akurasi**: Dibandingkan dengan manusia, sistem AI cenderung lebih akurat dalam tugas-tugas yang memerlukan konsistensi dan presisi.
-- **Inovasi**: Menggunakan teknologi terbaru memungkinkan perusahaan untuk tetap bersaing dan berinovasi dalam lingkungan bisnis yang cepat berubah.
+```ansi
+[0;36m  vite v5.0.0[0;32m dev server running at:[0m
 
-## Kesimpulan
+  > Local: [0;36mhttp://localhost:[0;36;1m3000[0;36m/[0m
+  > Network: [0;2muse `--host` to expose[0m
 
-Teknologi terbaru dalam AI telah membuka pintu untuk otomatisasi yang lebih efisien dan cerdas. Dengan memahami konsep ini, perusahaan dapat meningkatkan produktivitas mereka dan tetap relevan dalam era digital yang terus berkembang.
+  [0;36mready in 125ms.[0m
 
-Terima kasih telah membaca! Tetaplah berlangganan untuk informasi terbaru tentang teknologi dan inovasi.
+[0;2m8:38:02 PM[0m [0;36;1m[vite][0m [0;32mhmr update [0;2m/src/App.jsx
+```
+
+Inline ANSI: `> Local: [0;36mhttp://localhost:[0;36;1m3000[0;36m/[0m{:ansi}`
+
+---
+
+### Kitchen Sink Meta Strings
+
+```js showLineNumbers {2-4} title="isEven.js" /console/ caption="Im a caption"
+function isEven(number) {
+  if (number === 1) {
+    return false;
+  } else if (number === 2) {
+    return true;
+  } else if (number === 3) {
+    return false;
+  } else if (number === 4) {
+    return true;
+  } else if (number === 5) {
+    return false;
+  } else if (number === 6) {
+    return true;
+  } else if (number === 7) {
+    return false;
+  } else if (number === 8) {
+    return true;
+  } else if (number === 9) {
+    return false;
+  } else if (number === 10) {
+    return true;
+  } else {
+    return "Number is not between 1 and 10.";
+  }
+}
+
+// Example usage:
+console.log(isEven(3)); // Should return false
+console.log(isEven(4)); // Should return true
+console.log(isEven(11)); // Should return "Number is not between 1 and 10."
+```
